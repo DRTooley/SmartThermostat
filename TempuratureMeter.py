@@ -16,10 +16,12 @@ class TempuratureMeter():
         return self.coolLimit
 
     def matchCoolLimit(self):
-        self.heatLimit = self.coolLimit + self.MinDifference
+        if self.coolLimit+self.MinDiffernce > self.heatLimit:
+            self.heatLimit = self.coolLimit + self.MinDifference
 
     def matchHeatLimit(self):
-        self.coolLimit = self.heatLimit - self.MinDifference
+        if self.heatLimit < self.coolLimit+self.MinDifference:
+            self.coolLimit = self.heatLimit - self.MinDifference
 
     def decreaseCoolLimit(self, amount=1):
         if self.coolLimit-amount >= self.MinCool:
@@ -32,9 +34,8 @@ class TempuratureMeter():
             self.coolLimit+=amount
         else:
             self.coolLimit = self.MaxHeat-self.MinDifference
-
-        if self.coolLimit+self.MinDiffernce > self.heatLimit:
-            self.matchCoolLimit()
+    
+        self.matchCoolLimit()
 
     def increaseHeatLimit(self, amount=1):
         if self.heatLimit+amount <= self.MaxHeat:
@@ -48,6 +49,5 @@ class TempuratureMeter():
         else:
             self.coolLimit = self.MaxHot+self.MinDifference
 
-        if self.heatLimit < self.coolLimit+self.MinDifference:
-            self.matchHeatLimit()
+        self.matchHeatLimit()
         
