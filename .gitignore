@@ -1,0 +1,3 @@
+*.py~
+GUI/*
+__pycache__
