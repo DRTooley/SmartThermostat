@@ -1,16 +1,31 @@
+import threading
 
 import TempuratureHardwareManager as THM
 import TempuratureMeter as TM
+import TempuratureReader as TR
 
 class ThermometerState():
     Undefined, Comfortable, Heating, Cooling = range(4)
 
 class TempuratureControlLogic():
-    def __init__(self, Cold = 70, Hot = 74):
+    def __init__(self, ThreadTimes, Cold = 70, Hot = 74):
         self.state = ThermometerState.Undefined
         self.tempurature = None
+        self.threadValidator = ThreadTimes
+
         self.hardware = THM.TempuratureHardwareManager()
-        self.tempurature_control = TM.TempuratureControl(Cold, Hot)
+        self.tempuratureControl = TM.TempuratureMeter(Cold, Hot)
+        self.tempuratureKeeper = TR.TempuratureReader(self.threadValidator)
+        self.MainLogicThread()
+
+    def MainLogicThread(self):
+        CurrentTemp_Avg = self.tempuratureKeeper.average_tempurature()
+        if CurrentTemp_Avg != None:
+            print("The average tempurature is: %.2f" % CurrentTemp_Avg)
+            self.DetermineState(CurrentTemp_Avg)
+        if self.threadValidator.isRunning():
+            waitTime = self.threadValidator.GetMainLogicThreadWaitTime()
+            threading.Timer(waitTime, self.MainLogicThread).start()
 
     def DetermineState(self, Temp):
         self.setTempurature(Temp)
@@ -41,9 +56,9 @@ class TempuratureControlLogic():
         print("Cooling")
 
     def DefaultLogic(self, differential=0):
-        if self.tempurature <= self.tempurature_control.getCoolLimit() + differential:
+        if self.tempurature <= self.tempuratureControl.getCoolLimit() + differential:
             self.state = ThermometerState.Heating
-        elif self.tempurature >= self.tempurature_control.getHeatLimit() + differential:
+        elif self.tempurature >= self.tempuratureControl.getHeatLimit() + differential:
             self.state = ThermometerState.Cooling
         else:
             self.state = ThermometerState.Comfortable

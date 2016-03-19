@@ -4,10 +4,10 @@ import threading
 import TempuratureSensor as TS
 
 class TempuratureReader():
-    def __init__(self):
+    def __init__(self, ThreadTimes):
         self.current_tempurature_sensors = {}
+        self.threadValidator = ThreadTimes
         self.PopulateCurrentTempuratureFiles()
-        
 
     def PopulateCurrentTempuratureFiles(self):
         self.RemoveLostFiles()
@@ -16,9 +16,11 @@ class TempuratureReader():
             try:
                 self.current_tempurature_sensors[file]
             except KeyError:
-                self.current_tempurature_sensors[file] = TS.TempuratureSensor(file)
+                self.current_tempurature_sensors[file] = TS.TempuratureSensor(file, self.threadValidator)
 
-        threading.Timer(60, self.PopulateCurrentTempuratureFiles).start()
+        if self.threadValidator.isRunning():
+            waitTime = self.threadValidator.GetPopulateSensorFilesWaitTime()
+            threading.Timer(waitTime, self.PopulateCurrentTempuratureFiles).start()
         
     def RemoveLostFiles(self):
         for key, TempSensor in self.current_tempurature_sensors.items():

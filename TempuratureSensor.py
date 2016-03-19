@@ -2,11 +2,12 @@
 import threading
 
 class TempuratureSensor():
-    def __init__(self,file_location):
+    def __init__(self,file_location, ThreadTimes):
         self.file_location = file_location
         self.tempurature_reading = None
         self.tempurature_valid = False
         self.running = True
+        self.threadValidator = ThreadTimes
 
         self.Update()
 
@@ -32,7 +33,9 @@ class TempuratureSensor():
                 self.tempurature_reading = None
                 self.tempurature_valid = False
 
-            threading.Timer(5.0, self.Update).start()
+            if self.threadValidator.isRunning():
+                waitTime = self.threadValidator.GetSensorUpdateWaitTime()
+                threading.Timer(waitTime, self.Update).start()
 
             
 
