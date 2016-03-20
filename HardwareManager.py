@@ -1,6 +1,5 @@
 
 import RPi.GPIO as GPIO
-import time
 
 class RelayLine():
     def __init__(self, GPIO_out):
@@ -27,7 +26,7 @@ class RelayLine():
     def CleanUp(self):
         GPIO.cleanup()
 
-class TempuratureHardwareManager():
+class HardwareManager():
     def __init__(self):
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
@@ -43,7 +42,7 @@ class TempuratureHardwareManager():
     def StartHeat(self):
         self.Cool.setActive(False)
         self.Fan.setActive(True)
-        self.Heat.setActive(False)
+        self.Heat.setActive(True)
 
     def StartFan(self):
         self.Cool.setActive(False)

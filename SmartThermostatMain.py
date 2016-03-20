@@ -4,12 +4,12 @@ import os
 import time
 import sys
 
-import TempuratureHardwareManager as THM
+import HardwareManager as HM
 import ThermostatGUI as TG
 
 def CleanThermostat():
-    Cleaner = THM.TempuratureHardwareManager()
-    Cleaner.hardware.DoCleanUp()
+    Cleaner = HM.HardwareManager()
+    Cleaner.DoCleanUp()
 
 
 

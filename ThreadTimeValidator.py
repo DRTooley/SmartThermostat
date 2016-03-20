@@ -5,7 +5,7 @@ class ThreadTimeValidator():
         # Wait time in seconds for each function to be rerun
         self.mainLogicThreadWaitTime = 2.0
         self.sensorUpdateWaitTime = 3.0
-        self.populateSensorFilesWaitTime = 15.0
+        self.populateSensorFilesWaitTime = 8.0
         self.running = True
 
     def GetMainLogicThreadWaitTime(self):
