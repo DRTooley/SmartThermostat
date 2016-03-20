@@ -6,7 +6,11 @@ class ThreadTimeValidator():
         self.mainLogicThreadWaitTime = 2.0
         self.sensorUpdateWaitTime = 3.0
         self.populateSensorFilesWaitTime = 8.0
+        self.updateDisplayWaitTime = 1.0
         self.running = True
+
+    def GetUpdateDisplayWaitTime(self):
+        return self.updateDisplayWaitTime
 
     def GetMainLogicThreadWaitTime(self):
         return self.mainLogicThreadWaitTime

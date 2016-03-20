@@ -3,9 +3,24 @@ import threading
 import HardwareManager as HM
 import TempuratureReader as TR
 
-numberOfThermometerStates = 6
 class ThermometerState():
+    numberOfThermometerStates = 6
     Undefined, Comfortable, Heating, Cooling, Fan, Off = range(numberOfThermometerStates)
+
+    def GetStateText(state):
+        if state == 1:
+            return "Comfort"
+        elif state == 2:
+            return "Heating"
+        elif state == 3:
+            return "Cooling"
+        elif state == 4:
+            return "Fan Only"
+        elif state == 5:
+            return "Off"
+        else:
+            return "Undefined"
+
 
 class ControlLogic():
     def __init__(self, ThreadTimes, TempMeter):
@@ -21,7 +36,6 @@ class ControlLogic():
     def MainLogicThread(self):
         CurrentTemp_Avg = self.tempuratureKeeper.average_tempurature()
         if CurrentTemp_Avg != None:
-            print("The average tempurature is: %.2f" % CurrentTemp_Avg)
             self.DetermineState(CurrentTemp_Avg)
         if self.threadValidator.isRunning():
             waitTime = self.threadValidator.GetMainLogicThreadWaitTime()
@@ -38,28 +52,22 @@ class ControlLogic():
             self.CoolingLogic()
         elif self.state == ThermometerState.Fan:
             self.hardware.StartFan()
-            print("Fanning")
         elif self.state == ThermometerState.Off:
             self.hardware.Off()
-            print("System Off")
         else:
             self.DefaultLogic()
 
     def ComfortLogic(self):
         self.DefaultLogic()
         self.hardware.Off()
-        print("Comfort")
-        
 
     def HeatingLogic(self):
         self.DefaultLogic(1)
         self.hardware.StartHeat()
-        print("Heating")
 
     def CoolingLogic(self):
         self.DefaultLogic(-1)
         self.hardware.StartCool()
-        print("Cooling")
 
     def DefaultLogic(self, differential=0):
         if self.tempurature <= self.tempuratureControl.GetCoolLimit() + differential:
@@ -71,17 +79,23 @@ class ControlLogic():
 
 
     def SetState(self, state):
-        if state >= 0 and state < numberOfThermometerStates:
+        if state >= 0 and state < ThermometerState.numberOfThermometerStates:
             self.state = state
 
     def GetState(self):
         return self.state
 
-    def SetTempurature(self, tmp):
-        self.tempurature = tmp
- 
-    def GetTempurature(self):
+    def GetAverageTempurature(self):
         return self.tempurature
+
+    def SetTempurature(self, temp):
+        self.tempurature = temp
+
+    def GetLowestTempurature(self):
+        return self.tempuratureKeeper.FindLowestTempurature()
+
+    def GetHighestTempurature(self):
+        return self.tempuratureKeeper.FindHighestTempurature()
 
     def FanOn(self):
         self.SetState(ThermometerState.Fan)
@@ -91,4 +105,7 @@ class ControlLogic():
 
     def TurnOn(self):
         self.SetState(ThermometerState.Undefined)
+
+    def GetValidSensorCount(self):
+        return self.tempuratureKeeper.GetValidSensorCount()
 
