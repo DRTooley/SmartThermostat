@@ -75,7 +75,13 @@ class ThermostatApp(tkinter.Tk):
         quitButton = tkinter.Button(self, text="Quit!", command=self.Quit, height=buttonHeight, width=buttonWidth)
         quitButton.grid(column=10, row=10)
 
-        self.UpdateLabels()
+        self.StartUpdateLabels()
+
+    def StartUpdateLabels(self):
+        if self.threadValidator.isRunning():
+            waitTime = self.threadValidator.GetUpdateDisplayWaitTime()
+            t = threading.Timer(waitTime, self.UpdateLabels).start()
+            self.threadValidator.SetUpdateDisplayTimerThread(t)
 
     def UpdateLabels(self):
         self.currentTempurature['text'] = "%.2f" % self.ctrlLogic.GetAverageTempurature()
@@ -86,10 +92,7 @@ class ThermostatApp(tkinter.Tk):
         self.lowSetting['text'] = str(self.tempuratureControl.GetCoolLimit())
         self.highSetting['text'] = str(self.tempuratureControl.GetHeatLimit())
 
-        if self.threadValidator.isRunning():
-            waitTime = self.threadValidator.GetUpdateDisplayWaitTime()
-            threading.Timer(waitTime, self.UpdateLabels).start()
-
+        self.StartUpdateLabels()
 
     def Quit(self):
         self.threadValidator.Exit()

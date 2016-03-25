@@ -25,22 +25,26 @@ class ThermometerState():
 class ControlLogic():
     def __init__(self, ThreadTimes, TempMeter):
         self.state = ThermometerState.Undefined
-        self.tempurature = None
+        self.tempurature = -1002
         self.threadValidator = ThreadTimes
         self.tempuratureControl = TempMeter
 
         self.hardware = HM.HardwareManager()
         self.tempuratureKeeper = TR.TempuratureReader(self.threadValidator)
-        self.MainLogicThread()
+        self.StartControlLogicThread()
 
-    def MainLogicThread(self):
-        CurrentTemp_Avg = self.tempuratureKeeper.average_tempurature()
+    def StartControlLogicThread(self):
+        if self.threadValidator.isRunning():
+            waitTime = self.threadValidator.GetControlLogicWaitTime()
+            t = threading.Timer(waitTime, self.ControlLogicThread).start()  
+            self.threadValidator.SetControlLogicTimerThread(t)
+
+    def ControlLogicThread(self):
+        CurrentTemp_Avg = self.tempuratureKeeper.AverageTempurature()
         
         self.DetermineState(CurrentTemp_Avg)
         
-        if self.threadValidator.isRunning():
-            waitTime = self.threadValidator.GetMainLogicThreadWaitTime()
-            threading.Timer(waitTime, self.MainLogicThread).start()
+        self.StartControlLogicThread()
 
     def DetermineState(self, Temp):
         if Temp is None:

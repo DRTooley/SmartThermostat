@@ -9,7 +9,13 @@ class TempuratureSensor():
         self.running = True
         self.threadValidator = ThreadTimes
 
-        self.Update()
+        self.StartUpdate()
+
+    def StartUpdate(self):
+        if self.threadValidator.isRunning():
+            waitTime = self.threadValidator.GetSensorUpdateWaitTime()
+            t = threading.Timer(waitTime, self.Update).start()       
+            self.threadValidator.SetSensorUpdateTimerThread(t)
 
     def Update(self):
         temp = 0
@@ -37,10 +43,9 @@ class TempuratureSensor():
             else:
                 self.tempurature_reading = None
                 self.tempurature_valid = False
+                
+            self.StartUpdate()
 
-            if self.threadValidator.isRunning():
-                waitTime = self.threadValidator.GetSensorUpdateWaitTime()
-                threading.Timer(waitTime, self.Update).start()
 
             
 
