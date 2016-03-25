@@ -28,7 +28,12 @@ class TempuratureSensor():
         else:
             if split[11] == 'YES':
                 self.tempurature_reading = int(temp)/1000 * 9/5 + 32
-                self.tempurature_valid = True
+                if self.tempurature_reading >= 130 or self.tempurature_reading <= 35:
+                    self.tempurature_reading = None
+                    self.tempurature_valid = False
+                else:
+                    self.tempurature_valid = True
+
             else:
                 self.tempurature_reading = None
                 self.tempurature_valid = False

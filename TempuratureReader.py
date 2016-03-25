@@ -8,8 +8,11 @@ class TempuratureReader():
         self.current_tempurature_sensors = {}
         self.threadValidator = ThreadTimes
         self.validSensorCount = None
-        self.PopulateCurrentTempuratureFiles()
+        #self.PopulateCurrentTempuratureFiles()
         
+        if self.threadValidator.isRunning():
+            threading.Timer(3, self.PopulateCurrentTempuratureFiles).start()
+
 
     def PopulateCurrentTempuratureFiles(self):
         self.RemoveLostFiles()
@@ -44,16 +47,17 @@ class TempuratureReader():
             self.validSensorCount = len(tempurature_list)
             return sum(tempurature_list)/len(tempurature_list)
         else:
+            self.validSensorCount = 0
             return None
 
     def GetValidSensorCount(self):
         return self.validSensorCount
 
     def FindLowestTempurature(self):
-        lowest = None
+        lowest = -1000
         for key, tempSensor in self.current_tempurature_sensors.items():
             if tempSensor.getTempuratureValid():
-                if lowest is None:
+                if lowest == -1000:
                     lowest = tempSensor.getTempurature()
                 else:
                     if lowest > tempSensor.getTempurature():
@@ -62,10 +66,10 @@ class TempuratureReader():
         return lowest
 
     def FindHighestTempurature(self):
-        highest = None
+        highest = -1001
         for key, tempSensor in self.current_tempurature_sensors.items():
             if tempSensor.getTempuratureValid():
-                if highest is None:
+                if highest == -1001:
                     highest = tempSensor.getTempurature()
                 else:
                     if highest < tempSensor.getTempurature():

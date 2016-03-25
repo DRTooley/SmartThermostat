@@ -48,28 +48,31 @@ class ThermostatApp(tkinter.Tk):
         self.highSetting = tkinter.Label(self, text="73")
         self.highSetting.grid(column=4, row=1)
 
-        validSensorCountLabel = tkinter.Label(self, text="# Valid Sensors:   ")
+        validSensorCountLabel = tkinter.Label(self, text="Valid Sensors:   ")
         validSensorCountLabel.grid(column=0, row=5)
         self.sensorCount = tkinter.Label(self, text="TBD")
         self.sensorCount.grid(column=1, row=5)
 
+        buttonHeight = 8
+        buttonWidth = 15
 
-        tempUpButton = tkinter.Button(self, text="Temp Up!", command=self.IncreaseTempurature)
+
+        tempUpButton = tkinter.Button(self, text="Temp Up!", command=self.IncreaseTempurature, height=buttonHeight, width=buttonWidth)
         tempUpButton.grid(column=6, row=0)
 
-        tempDownButton = tkinter.Button(self, text="Temp Down!", command=self.DecreaseTempurature)
+        tempDownButton = tkinter.Button(self, text="Temp Down!", command=self.DecreaseTempurature, height=buttonHeight, width=buttonWidth)
         tempDownButton.grid(column=6, row=2)
 
-        fanOnlyButton = tkinter.Button(self, text="Fan Only!", command=self.StartFan)
+        fanOnlyButton = tkinter.Button(self, text="Fan Only!", command=self.StartFan, height=buttonHeight, width=buttonWidth)
         fanOnlyButton.grid(column=8, row=0)
 
-        turnOffButton = tkinter.Button(self, text="Turn Off!", command=self.TurnOff)
+        turnOffButton = tkinter.Button(self, text="Turn Off!", command=self.TurnOff, height=buttonHeight, width=buttonWidth)
         turnOffButton.grid(column=10, row=0)
 
-        turnOnButton = tkinter.Button(self, text="Turn On!", command=self.TurnOn)
+        turnOnButton = tkinter.Button(self, text="Turn On!", command=self.TurnOn, height=buttonHeight, width=buttonWidth)
         turnOnButton.grid(column=10, row=2)
 
-        quitButton = tkinter.Button(self, text="Quit!", command=self.Quit)
+        quitButton = tkinter.Button(self, text="Quit!", command=self.Quit, height=buttonHeight, width=buttonWidth)
         quitButton.grid(column=10, row=10)
 
         self.UpdateLabels()

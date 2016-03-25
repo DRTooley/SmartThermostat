@@ -35,27 +35,34 @@ class ControlLogic():
 
     def MainLogicThread(self):
         CurrentTemp_Avg = self.tempuratureKeeper.average_tempurature()
-        if CurrentTemp_Avg != None:
-            self.DetermineState(CurrentTemp_Avg)
+        
+        self.DetermineState(CurrentTemp_Avg)
+        
         if self.threadValidator.isRunning():
             waitTime = self.threadValidator.GetMainLogicThreadWaitTime()
             threading.Timer(waitTime, self.MainLogicThread).start()
 
     def DetermineState(self, Temp):
-        self.SetTempurature(Temp)
-
-        if self.state == ThermometerState.Comfortable:
-            self.ComfortLogic()
-        elif self.state == ThermometerState.Heating:
-            self.HeatingLogic()
-        elif self.state == ThermometerState.Cooling:
-            self.CoolingLogic()
-        elif self.state == ThermometerState.Fan:
-            self.hardware.StartFan()
-        elif self.state == ThermometerState.Off:
+        if Temp is None:
+            self.SetTempurature(-1002)
             self.hardware.Off()
-        else:
-            self.DefaultLogic()
+            self.SetState(ThermometerState.Undefined)
+        
+        else:    
+            self.SetTempurature(Temp)
+
+            if self.GetState() == ThermometerState.Comfortable:
+                self.ComfortLogic()
+            elif self.state == ThermometerState.Heating:
+                self.HeatingLogic()
+            elif self.GetState() == ThermometerState.Cooling:
+                self.CoolingLogic()
+            elif self.GetState() == ThermometerState.Fan:
+                self.hardware.StartFan()
+            elif self.GetState() == ThermometerState.Off:
+                self.hardware.Off()
+            else:
+                self.DefaultLogic()
 
     def ComfortLogic(self):
         self.DefaultLogic()
@@ -71,11 +78,11 @@ class ControlLogic():
 
     def DefaultLogic(self, differential=0):
         if self.tempurature <= self.tempuratureControl.GetCoolLimit() + differential:
-            self.state = ThermometerState.Heating
+            self.SetState(ThermometerState.Heating)
         elif self.tempurature >= self.tempuratureControl.GetHeatLimit() + differential:
-            self.state = ThermometerState.Cooling
+            self.SetState(ThermometerState.Cooling)
         else:
-            self.state = ThermometerState.Comfortable
+            self.SetState(ThermometerState.Comfortable)
 
 
     def SetState(self, state):
