@@ -34,7 +34,14 @@ class TempuratureSensor():
         else:
             if split[11] == 'YES':
                 self.tempurature_reading = int(temp)/1000 * 9/5 + 32
-                if self.tempurature_reading >= 130 or self.tempurature_reading <= 35:
+
+                # This check is implemented to protect against errant tempurature sensor data
+                # In the event the sensor loses +3.3V it will report "YES" but give 0 degree Celcius 
+                # This would be a very bad value to take into the average calcluation
+                # Similarly if the comm wire is removed it could report 185 degrees Fahrenheit. Also bad.
+                # To protect against these known issues and other potential unkowns I have bound the reading
+                # to what I consider to be valid upper and lower bounds.
+                if self.tempurature_reading >= 130 or self.tempurature_reading <= 45:
                     self.tempurature_reading = None
                     self.tempurature_valid = False
                 else:

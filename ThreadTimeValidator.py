@@ -1,18 +1,17 @@
+import time
+
 class ThreadOptions():
     def __init__(self, wait_time, thread_timer = None):
         self.waitTime = wait_time
         self.threadTimer = thread_timer
 
-    
-
-
 
 class ThreadTimeValidator():
     def __init__(self):
         # Wait time in seconds for each function to be rerun
-        self.controlLogicTO = ThreadOptions(10.0)
-        self.sensorUpdateTO = ThreadOptions(5.0)
-        self.populateSensorFilesTO = ThreadOptions(20.0)
+        self.controlLogicTO = ThreadOptions(1.0)
+        self.sensorUpdateTO = ThreadOptions(1.0)
+        self.populateSensorFilesTO = ThreadOptions(2.5)
         self.updateDisplayTO = ThreadOptions(0.1)
 
         self.allThreadOptions = [
@@ -68,3 +67,11 @@ class ThreadTimeValidator():
         for TO in self.allThreadOptions:
             if TO.threadTimer is not None:
                 TO.threadTimer.cancel()
+
+        for TO in self.allThreadOptions:
+            if TO.threadTimer is not None:
+                TO.threadTimer.join()
+
+        # Allow other processes to exit
+        time.sleep(1.0)
+        

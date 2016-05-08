@@ -15,6 +15,8 @@ class ThermostatApp(tkinter.Tk):
 
         self.Initialize()
 
+        self.protocol("WM_DELETE_WINDOW", self.Quit)
+
 
     def Initialize(self):
         self.grid()
@@ -39,29 +41,29 @@ class ThermostatApp(tkinter.Tk):
 
 
         lowSettingLabel = tkinter.Label(self, text="Low Setting:   ")
-        lowSettingLabel.grid(column=3, row=2)
+        lowSettingLabel.grid(column=0, row=2)
         highSettingLabel = tkinter.Label(self, text="High Setting: ")
-        highSettingLabel.grid(column=3, row=1)
+        highSettingLabel.grid(column=0, row=1)
 
         self.lowSetting = tkinter.Label(self, text="71")
-        self.lowSetting.grid(column=4, row=2)
+        self.lowSetting.grid(column=1, row=2)
         self.highSetting = tkinter.Label(self, text="73")
-        self.highSetting.grid(column=4, row=1)
+        self.highSetting.grid(column=1, row=1)
 
         validSensorCountLabel = tkinter.Label(self, text="Valid Sensors:   ")
         validSensorCountLabel.grid(column=0, row=5)
         self.sensorCount = tkinter.Label(self, text="TBD")
         self.sensorCount.grid(column=1, row=5)
 
-        buttonHeight = 8
-        buttonWidth = 15
+        buttonHeight = 15
+        buttonWidth = 30
 
 
         tempUpButton = tkinter.Button(self, text="Temp Up!", command=self.IncreaseTempurature, height=buttonHeight, width=buttonWidth)
         tempUpButton.grid(column=6, row=0)
 
         tempDownButton = tkinter.Button(self, text="Temp Down!", command=self.DecreaseTempurature, height=buttonHeight, width=buttonWidth)
-        tempDownButton.grid(column=6, row=2)
+        tempDownButton.grid(column=6, row=3)
 
         fanOnlyButton = tkinter.Button(self, text="Fan Only!", command=self.StartFan, height=buttonHeight, width=buttonWidth)
         fanOnlyButton.grid(column=8, row=0)
@@ -70,7 +72,7 @@ class ThermostatApp(tkinter.Tk):
         turnOffButton.grid(column=10, row=0)
 
         turnOnButton = tkinter.Button(self, text="Turn On!", command=self.TurnOn, height=buttonHeight, width=buttonWidth)
-        turnOnButton.grid(column=10, row=2)
+        turnOnButton.grid(column=10, row=3)
 
         quitButton = tkinter.Button(self, text="Quit!", command=self.Quit, height=buttonHeight, width=buttonWidth)
         quitButton.grid(column=10, row=10)
@@ -96,7 +98,8 @@ class ThermostatApp(tkinter.Tk):
 
     def Quit(self):
         self.threadValidator.Exit()
-        self.ctrlLogic.TurnOff()
+        self.ctrlLogic.CleanUpHW()
+        self.destroy()
 
     def StartFan(self):
         self.ctrlLogic.FanOn()

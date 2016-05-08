@@ -120,3 +120,7 @@ class ControlLogic():
     def GetValidSensorCount(self):
         return self.tempuratureKeeper.GetValidSensorCount()
 
+    def CleanUpHW(self):
+        self.TurnOff()
+        self.hardware.DoCleanUp()
+
