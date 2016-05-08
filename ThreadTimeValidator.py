@@ -73,5 +73,5 @@ class ThreadTimeValidator():
                 TO.threadTimer.join()
 
         # Allow other processes to exit
-        time.sleep(1.0)
+        time.sleep(5)
         

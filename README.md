@@ -39,7 +39,7 @@ is called the function will not run but the timer will still stall closing the
 program. 
 
 ##############################################################
-## Know Issues
+## Known Issues
 
 1) Upon exit a thread does not exit. This forces a Ctrl-c to exit fully.
 This is not a huge issue as one shouldn't be opening and closing this program

@@ -18,9 +18,7 @@ class ThermostatApp(tkinter.Tk):
         self.protocol("WM_DELETE_WINDOW", self.Quit)
 
 
-    def Initialize(self):
-        self.grid()
-
+    def InitLabels(self):
         avgLabel = tkinter.Label(self, text="Average: ")
         avgLabel.grid(column=0, row=0)
         lowestLabel = tkinter.Label(self, text="Lowest: ")
@@ -55,27 +53,30 @@ class ThermostatApp(tkinter.Tk):
         self.sensorCount = tkinter.Label(self, text="TBD")
         self.sensorCount.grid(column=1, row=5)
 
+    def InitButtons(self):
         buttonHeight = 15
         buttonWidth = 30
 
 
-        tempUpButton = tkinter.Button(self, text="Temp Up!", command=self.IncreaseTempurature, height=buttonHeight, width=buttonWidth)
-        tempUpButton.grid(column=6, row=0)
+        tempUpButton = tkinter.Button(self, text="Temp Up!", command=self.IncreaseTempurature)
+        tempUpButton.grid(column=6, row=0, sticky=N+S+E+W)
 
         tempDownButton = tkinter.Button(self, text="Temp Down!", command=self.DecreaseTempurature, height=buttonHeight, width=buttonWidth)
-        tempDownButton.grid(column=6, row=3)
+        tempDownButton.grid(column=6, row=3, sticky=N+S+E+W)
 
         fanOnlyButton = tkinter.Button(self, text="Fan Only!", command=self.StartFan, height=buttonHeight, width=buttonWidth)
-        fanOnlyButton.grid(column=8, row=0)
+        fanOnlyButton.grid(column=8, row=0, sticky=N+S+E+W)
 
         turnOffButton = tkinter.Button(self, text="Turn Off!", command=self.TurnOff, height=buttonHeight, width=buttonWidth)
-        turnOffButton.grid(column=10, row=0)
+        turnOffButton.grid(column=10, row=0, sticky=N+S+E+W)
 
         turnOnButton = tkinter.Button(self, text="Turn On!", command=self.TurnOn, height=buttonHeight, width=buttonWidth)
-        turnOnButton.grid(column=10, row=3)
+        turnOnButton.grid(column=10, row=3, sticky=N+S+E+W)
 
-        quitButton = tkinter.Button(self, text="Quit!", command=self.Quit, height=buttonHeight, width=buttonWidth)
-        quitButton.grid(column=10, row=10)
+    def Initialize(self):
+        self.grid()
+        self.InitLabels()
+        self.InitButtons()
 
         self.StartUpdateLabels()
 
