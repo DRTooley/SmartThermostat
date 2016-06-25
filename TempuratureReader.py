@@ -1,15 +1,22 @@
 
 import glob
 import threading
+
 import TempuratureSensor as TS
+from SmartThermostatMain import Debugging
 
 class TempuratureReader():
     def __init__(self, ThreadTimes):
+
         self.current_tempurature_sensors = {}
         self.threadValidator = ThreadTimes
         self.validSensorCount = None
+        self.sensorDirectoryLocation = '/sys/bus/w1/devices/28-*'
+        if Dubugging:
+            self.sensorDirectoryLocatoion = "DebugTempuratureSensors/*"
+            
         self.PopulateCurrentTempuratureFiles()
-
+            
     def StartPopulateCurrentTempuratureFiles(self):
         if self.threadValidator.isRunning():
             waitTime = self.threadValidator.GetPopulateSensorFilesWaitTime()
@@ -33,7 +40,7 @@ class TempuratureReader():
                 del self.current_tempurature_sensors[key]
 
     def FindTempuratureFiles(self):
-        dir_list = glob.glob('/sys/bus/w1/devices/28-*')
+        dir_list = glob.glob(self.sensorDirectoryLocation)
         file_list = [file+'/w1_slave' for file in dir_list]
         return file_list
 

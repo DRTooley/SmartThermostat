@@ -59,19 +59,19 @@ class ThermostatApp(tkinter.Tk):
 
 
         tempUpButton = tkinter.Button(self, text="Temp Up!", command=self.IncreaseTempurature)
-        tempUpButton.grid(column=6, row=0, sticky=N+S+E+W)
+        tempUpButton.grid(column=6, row=0, sticky='nsew')
 
         tempDownButton = tkinter.Button(self, text="Temp Down!", command=self.DecreaseTempurature, height=buttonHeight, width=buttonWidth)
-        tempDownButton.grid(column=6, row=3, sticky=N+S+E+W)
+        tempDownButton.grid(column=6, row=3, sticky='nsew')
 
         fanOnlyButton = tkinter.Button(self, text="Fan Only!", command=self.StartFan, height=buttonHeight, width=buttonWidth)
-        fanOnlyButton.grid(column=8, row=0, sticky=N+S+E+W)
+        fanOnlyButton.grid(column=8, row=0, sticky='nsew')
 
         turnOffButton = tkinter.Button(self, text="Turn Off!", command=self.TurnOff, height=buttonHeight, width=buttonWidth)
-        turnOffButton.grid(column=10, row=0, sticky=N+S+E+W)
+        turnOffButton.grid(column=10, row=0, sticky='nsew')
 
         turnOnButton = tkinter.Button(self, text="Turn On!", command=self.TurnOn, height=buttonHeight, width=buttonWidth)
-        turnOnButton.grid(column=10, row=3, sticky=N+S+E+W)
+        turnOnButton.grid(column=10, row=3, sticky='nsew')
 
     def Initialize(self):
         self.grid()
