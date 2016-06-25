@@ -1,9 +1,9 @@
+from DebuggingControl import Debug
+
 try:
     import RPi.GPIO as GPIO
-    from SmartThermostatMain import Debugging
 except ImportError:
-    from SmartThermostatMain import Debugging
-    Debugging = True
+    Debug(True)
     print("Debugging Mode Active")
 
 
@@ -79,7 +79,8 @@ class ModelRelayLine(RelayLine):
         
 class HardwareManager():
     def __init__(self):
-        if Debugging:
+        debug = Debug()
+        if debug:
             self.Cool = ModelRelayLine(24)
             self.Heat = ModelRelayLine(23)
             self.Fan = ModelRelayLine(18)

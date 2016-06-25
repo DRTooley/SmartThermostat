@@ -3,7 +3,7 @@ import glob
 import threading
 
 import TempuratureSensor as TS
-from SmartThermostatMain import Debugging
+from DebuggingControl import Debug
 
 class TempuratureReader():
     def __init__(self, ThreadTimes):
@@ -12,8 +12,9 @@ class TempuratureReader():
         self.threadValidator = ThreadTimes
         self.validSensorCount = None
         self.sensorDirectoryLocation = '/sys/bus/w1/devices/28-*'
-        if Dubugging:
-            self.sensorDirectoryLocation = "DebugTempuratureSensors/*"
+        debug = Debug()
+        if debug:
+            self.sensorDirectoryLocation = "DebugTempuratureSensor/*"
             
         self.PopulateCurrentTempuratureFiles()
             
