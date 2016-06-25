@@ -1,5 +1,6 @@
 try:
     import RPi.GPIO as GPIO
+    from SmartThermostatMain import Debugging
 except ImportError:
     Debugging = True
     print("Debugging Mode Active")
