@@ -23,6 +23,6 @@ if __name__ == "__main__":
             CleanThermostat()
 
     else:
-        app = TG.ThermostatApp()
+        app = TG.ThermostatApp(None)
         app.title("Smart Thermostat Alpha")
         app.mainloop()
