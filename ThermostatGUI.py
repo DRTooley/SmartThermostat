@@ -6,9 +6,7 @@ import TempuratureMeter as TM
 
 
 class ThermostatApp(tkinter.Tk):
-    def __init__(self, parent):
-        tkinter.Tk.__init__(self, parent)
-        self.parent = parent
+    def __init__(self):
         self.tempuratureControl = TM.TempuratureMeter()
         self.threadValidator = TTV.ThreadTimeValidator()
         self.ctrlLogic = CL.ControlLogic(self.threadValidator, self.tempuratureControl)

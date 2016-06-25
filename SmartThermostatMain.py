@@ -3,6 +3,7 @@
 import os
 import time
 import sys
+import tkinter
 
 import HardwareManager as HM
 import ThermostatGUI as TG
@@ -22,6 +23,6 @@ if __name__ == "__main__":
             CleanThermostat()
 
     else:
-        app = TG.ThermostatApp(None)
+        app = TG.ThermostatApp()
         app.title("Smart Thermostat Alpha")
         app.mainloop()
