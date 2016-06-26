@@ -23,7 +23,7 @@ if __name__ == "__main__":
     ## and the GPIO will be on and must be cleaned
 
     debugSet = {'-d','-D','-debug'}
-    if debugSet.intersect(set(sys.argv)):
+    if set.intersection(debugSet, set(sys.argv)):
         d = Debug(True)
     if '-clean' in sys.argv:
         CleanThermostat()

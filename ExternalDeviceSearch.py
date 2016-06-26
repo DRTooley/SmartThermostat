@@ -8,6 +8,10 @@ class DeviceSearch():
             'fc:db:b3:43:47:08',
             '5c:8d:4e:cf:7c:82'
         ]
+        self.IP_Addresses = [
+            '192.168.1.200',
+            '192.168.1.201'
+        ]
 
         self.deviceFound = True
 
@@ -18,19 +22,19 @@ class DeviceSearch():
     def DeviceSearch(self):
         while True:
             deviceConnected = False
-            MAC_Search = ''
-            MAC_Search = MAC_Search [:-1]
-            p = subprocess.Popen("arp-scan -l", stdout=subprocess.PIPE, shell=True)
-            (output, err) = p.communicate()
-            p_status = p.wait()
-            for MAC in self.MAC_Addresses:
-                if MAC in output.decode():
+            for IP in self.IP_Addresses:
+                p = subprocess.Popen(["ping", '-c', '2', IP],
+                                     stdout=subprocess.PIPE, shell=False)
+                (output, err) = p.communicate()
+                p_status = p.wait()
+                if "Host Unreachable" not in output.decode():
                     print("Found")
+                    print(output.decode())
                     deviceConnected = True
                 else:
-                    print("Not Found {}".format(MAC))
+                    print("Not Found {}".format(IP))
                     print(output.decode())
-            self.deviceFound = deviceConnected
-            time.sleep(5)
+                self.deviceFound = deviceConnected
+                time.sleep(5)
 
         
