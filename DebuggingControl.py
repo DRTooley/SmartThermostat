@@ -1,16 +1,13 @@
-class Borg():
-    _shared_state = {}
-    def __init__(self):
-        self.__dict__ = self._shared_state
+class Debug():
+    __instance = None
+    def __new__(cls, arg=None):
+        if Debug.__instance is None:
+            Debug.__instance = object.__new__(cls)
 
-class Debug(Borg):
-    def __init__(self, arg=None):
         if arg is not None:
-            self.isDebugging = arg
-        
-    def __str__(self):
-        return self.isDebugging
+            Debug.__instance.isDebugging = arg
 
-    def __boolean__(self):
-        return self.isDebugging
-    
+        return Debug.__instance
+
+    def GetInfo(self):
+        return Debug.__instance.isDebugging

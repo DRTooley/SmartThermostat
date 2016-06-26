@@ -22,17 +22,11 @@ if __name__ == "__main__":
     ## There will be threads going in the background
     ## and the GPIO will be on and must be cleaned
 
-    if len(sys.argv) > 1:
-        debugSet = {'-d','-D','-debug'}
-        if '-clean' in sys.argv:
-            CleanThermostat()
-        elif '-d' in debugSet:
-            d = Debug(True)
-            if d:
-                print(d)
-    
-            
-
+    debugSet = {'-d','-D','-debug'}
+    if debugSet.intersect(set(sys.argv)):
+        d = Debug(True)
+    if '-clean' in sys.argv:
+        CleanThermostat()
     else:
         app = TG.ThermostatApp(None)
         app.title("Smart Thermostat Alpha")

@@ -79,8 +79,9 @@ class ModelRelayLine(RelayLine):
         
 class HardwareManager():
     def __init__(self):
-        debug = Debug()
-        if debug:
+        d = Debug()
+        if d.GetInfo():
+            print("Model Active")
             self.Cool = ModelRelayLine(24)
             self.Heat = ModelRelayLine(23)
             self.Fan = ModelRelayLine(18)

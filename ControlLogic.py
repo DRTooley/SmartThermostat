@@ -28,7 +28,7 @@ class ControlLogic():
         self.tempurature = -1002
         self.threadValidator = ThreadTimes
         self.tempuratureControl = TempMeter
-
+        print("Control Logic")
         self.hardware = HM.HardwareManager()
         self.tempuratureKeeper = TR.TempuratureReader(self.threadValidator)
         self.StartControlLogicThread()

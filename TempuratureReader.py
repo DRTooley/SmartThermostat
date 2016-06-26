@@ -13,7 +13,8 @@ class TempuratureReader():
         self.validSensorCount = None
         self.sensorDirectoryLocation = '/sys/bus/w1/devices/28-*'
         debug = Debug()
-        if debug:
+        if debug.GetInfo():
+            print("Using dummy sensor files!")
             self.sensorDirectoryLocation = "DebugTempuratureSensor/*"
             
         self.PopulateCurrentTempuratureFiles()
