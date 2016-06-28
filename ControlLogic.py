@@ -1,4 +1,5 @@
 import threading
+import time
 
 import HardwareManager as HM
 import TempuratureReader as TR
@@ -28,23 +29,25 @@ class ControlLogic():
         self.tempurature = -1002
         self.threadValidator = ThreadTimes
         self.tempuratureControl = TempMeter
-        print("Control Logic")
         self.hardware = HM.HardwareManager()
         self.tempuratureKeeper = TR.TempuratureReader(self.threadValidator)
         self.StartControlLogicThread()
 
     def StartControlLogicThread(self):
-        if self.threadValidator.isRunning():
-            waitTime = self.threadValidator.GetControlLogicWaitTime()
-            t = threading.Timer(waitTime, self.ControlLogicThread).start()  
-            self.threadValidator.SetControlLogicTimerThread(t)
+        t = threading.Thread(self.ControlLogicThread)
+        t.daemon = True
+        t.start()
+        self.threadValidator.SetControlLogicTimerThread(t)
 
     def ControlLogicThread(self):
-        CurrentTemp_Avg = self.tempuratureKeeper.AverageTempurature()
+        waitTime = self.threadValidator.GetControlLogicWaitTime()
+        while True:
+            time.sleep(waitTime)
+            CurrentTemp_Avg = self.tempuratureKeeper.AverageTempurature()
         
-        self.DetermineState(CurrentTemp_Avg)
+            self.DetermineState(CurrentTemp_Avg)
         
-        self.StartControlLogicThread()
+            self.StartControlLogicThread()
 
     def DetermineState(self, Temp):
         if Temp is None:

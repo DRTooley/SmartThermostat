@@ -1,4 +1,5 @@
 import tkinter
+import time
 import threading
 import ControlLogic as CL
 import ThreadTimeValidator as TTV
@@ -81,21 +82,22 @@ class ThermostatApp(tkinter.Tk):
         self.StartUpdateLabels()
 
     def StartUpdateLabels(self):
-        if self.threadValidator.isRunning():
-            waitTime = self.threadValidator.GetUpdateDisplayWaitTime()
-            t = threading.Timer(waitTime, self.UpdateLabels).start()
-            self.threadValidator.SetUpdateDisplayTimerThread(t)
+        t = threading.Thread(self.UpdateLabels)
+        t.daemon = True
+        t.start()
+        self.threadValidator.SetUpdateDisplayTimerThread(t)
 
     def UpdateLabels(self):
-        self.currentTempurature['text'] = "%.2f" % self.ctrlLogic.GetAverageTempurature()
-        self.lowestTempurature['text'] = "%.2f" % self.ctrlLogic.GetLowestTempurature()
-        self.highestTempurature['text'] = "%.2f" % self.ctrlLogic.GetHighestTempurature()
-        self.currentState['text'] = CL.ThermometerState.GetStateText(self.ctrlLogic.GetState())
-        self.sensorCount['text'] = str(self.ctrlLogic.GetValidSensorCount())
-        self.lowSetting['text'] = str(self.tempuratureControl.GetCoolLimit())
-        self.highSetting['text'] = str(self.tempuratureControl.GetHeatLimit())
-
-        self.StartUpdateLabels()
+        waitTime = self.threadValidator.GetUpdateDisplayWaitTime()
+        while True:
+            time.sleep(waitTime)
+            self.currentTempurature['text'] = "%.2f" % self.ctrlLogic.GetAverageTempurature()
+            self.lowestTempurature['text'] = "%.2f" % self.ctrlLogic.GetLowestTempurature()
+            self.highestTempurature['text'] = "%.2f" % self.ctrlLogic.GetHighestTempurature()
+            self.currentState['text'] = CL.ThermometerState.GetStateText(self.ctrlLogic.GetState())
+            self.sensorCount['text'] = str(self.ctrlLogic.GetValidSensorCount())
+            self.lowSetting['text'] = str(self.tempuratureControl.GetCoolLimit())
+            self.highSetting['text'] = str(self.tempuratureControl.GetHeatLimit())
 
     def Quit(self):
         self.threadValidator.Exit()

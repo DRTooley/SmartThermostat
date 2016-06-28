@@ -1,5 +1,6 @@
 
-# TODO Add functionality to check for phones on the wifi; adjust tempurature accordingly
+from ExternalDeviceSearch import DeviceSearch
+
 
 class TempuratureMeter():
     def __init__(self, Cold = 70, Hot = 73):
@@ -8,6 +9,7 @@ class TempuratureMeter():
         self.maxHeat = 100
         self.minCool = 50
         self.minDifference = 3
+        self.device = DeviceSearch()
         self.MatchCoolLimit()
         self.CheckBounds()
 
@@ -22,10 +24,16 @@ class TempuratureMeter():
        
 
     def GetHeatLimit(self):
-        return self.heatLimit
+        adjustment = 3
+        if self.device.deviceFound:
+            adjustment = 0
+        return self.heatLimit + adjustment
 
     def GetCoolLimit(self):
-        return self.coolLimit
+        adjustment = 3
+        if self.device.deviceFound:
+            adjustment = 0
+        return self.coolLimit + adjustment
 
     def MatchCoolLimit(self):
         if self.coolLimit+self.minDifference > self.heatLimit:

@@ -1,5 +1,6 @@
 
 import glob
+import time
 import threading
 
 import TempuratureSensor as TS
@@ -20,21 +21,23 @@ class TempuratureReader():
         self.PopulateCurrentTempuratureFiles()
             
     def StartPopulateCurrentTempuratureFiles(self):
-        if self.threadValidator.isRunning():
-            waitTime = self.threadValidator.GetPopulateSensorFilesWaitTime()
-            t = threading.Timer(waitTime, self.PopulateCurrentTempuratureFiles).start()
-            self.threadValidator.SetPopulateSensorFilesTimerThread(t)
+        t = threading.Thread(target=self.PopulateCurrentTempuratureFiles)
+        t.daemon = True
+        t.start()
+        self.threadValidator.SetPopulateSensorFilesTimerThread(t)
 
     def PopulateCurrentTempuratureFiles(self):
-        self.RemoveLostFiles()
-        file_list = self.FindTempuratureFiles()
-        for file in file_list:
-            try:
-                self.current_tempurature_sensors[file]
-            except KeyError:
-                self.current_tempurature_sensors[file] = TS.TempuratureSensor(file, self.threadValidator)
+        waitTime = self.threadValidator.GetPopulateSensorFilesWaitTime()
+        while True:
+            time.sleep(waitTime)
+            self.RemoveLostFiles()
+            file_list = self.FindTempuratureFiles()
+            for filename in file_list:
+                try:
+                    self.current_tempurature_sensors[filename]
+                except KeyError:
+                    self.current_tempurature_sensors[filename] = TS.TempuratureSensor(filename, self.threadValidator)
 
-        self.StartPopulateCurrentTempuratureFiles()
         
     def RemoveLostFiles(self):
         for key, TempSensor in self.current_tempurature_sensors.items():

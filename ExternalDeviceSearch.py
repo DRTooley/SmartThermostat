@@ -17,7 +17,7 @@ class DeviceSearch():
 
         t = threading.Thread(target=self.DeviceSearch)
         t.daemon = True
-        t.start()
+        #t.start()
 
     def DeviceSearch(self):
         while True:
@@ -35,6 +35,6 @@ class DeviceSearch():
                     print("Not Found {}".format(IP))
                     print(output.decode())
                 self.deviceFound = deviceConnected
-                time.sleep(5)
+                time.sleep(30)
 
         

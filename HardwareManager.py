@@ -3,44 +3,9 @@ from DebuggingControl import Debug
 try:
     import RPi.GPIO as GPIO
 except ImportError:
-    Debug(True)
     print("Debugging Mode Active")
+    d = Debug(True)
 
-
-class ModelHardware():
-    def __init__(self, HWM, master):
-        tkinter.Frame.__init__(master)
-        self.master = master
-        self.grid()
-        self.HWM = HWM
-    
-        avgLabel = tkinter.Label(self, text="Cool: ")
-        avgLabel.grid(column=0, row=0)
-        lowestLabel = tkinter.Label(self, text="Fan: ")
-        lowestLabel.grid(column=0, row=7)
-        highestLabel = tkinter.Label(self, text="Hot: ")
-        highestLabel.grid(column=0, row=6)
-        
-        self.currentTempurature = tkinter.Label(self, text="0")
-        self.currentTempurature.grid(column=1, row=0)
-        self.lowestTempurature = tkinter.Label(self, text="0")
-        self.lowestTempurature.grid(column=1, row=7)
-        self.highestTempurature = tkinter.Label(self, text="0")
-        self.highestTempurature.grid(column=1, row=6)
-        
-        self.after(1000, self.UpdateLabels)
-
-    def UpdateLabels(self):
-        self.currentTempurature['text'] = "%.2f" % self.ctrlLogic.GetAverageTempurature()
-        self.lowestTempurature['text'] = "%.2f" % self.ctrlLogic.GetLowestTempurature()
-        self.highestTempurature['text'] = "%.2f" % self.ctrlLogic.GetHighestTempurature()
-        self.currentState['text'] = CL.ThermometerState.GetStateText(self.ctrlLogic.GetState())
-        self.sensorCount['text'] = str(self.ctrlLogic.GetValidSensorCount())
-        self.lowSetting['text'] = str(self.tempuratureControl.GetCoolLimit())
-        self.highSetting['text'] = str(self.tempuratureControl.GetHeatLimit())
-
-        self.after(500, self.UpdateLabels)
-        
 class RelayLine():
     def __init__(self, GPIO_out):
         self.active = False
