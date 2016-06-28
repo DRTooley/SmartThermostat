@@ -18,7 +18,7 @@ class TempuratureReader():
             print("Using dummy sensor files!")
             self.sensorDirectoryLocation = "DebugTempuratureSensor/*"
             
-        self.PopulateCurrentTempuratureFiles()
+        self.StartPopulateCurrentTempuratureFiles()
             
     def StartPopulateCurrentTempuratureFiles(self):
         t = threading.Thread(target=self.PopulateCurrentTempuratureFiles)

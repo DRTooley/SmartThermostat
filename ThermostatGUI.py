@@ -79,25 +79,20 @@ class ThermostatApp(tkinter.Tk):
         self.InitLabels()
         self.InitButtons()
 
-        self.StartUpdateLabels()
-
-    def StartUpdateLabels(self):
-        t = threading.Thread(self.UpdateLabels)
-        t.daemon = True
-        t.start()
-        self.threadValidator.SetUpdateDisplayTimerThread(t)
+        self.after(1000, self.UpdateLabels)
 
     def UpdateLabels(self):
         waitTime = self.threadValidator.GetUpdateDisplayWaitTime()
-        while True:
-            time.sleep(waitTime)
-            self.currentTempurature['text'] = "%.2f" % self.ctrlLogic.GetAverageTempurature()
-            self.lowestTempurature['text'] = "%.2f" % self.ctrlLogic.GetLowestTempurature()
-            self.highestTempurature['text'] = "%.2f" % self.ctrlLogic.GetHighestTempurature()
-            self.currentState['text'] = CL.ThermometerState.GetStateText(self.ctrlLogic.GetState())
-            self.sensorCount['text'] = str(self.ctrlLogic.GetValidSensorCount())
-            self.lowSetting['text'] = str(self.tempuratureControl.GetCoolLimit())
-            self.highSetting['text'] = str(self.tempuratureControl.GetHeatLimit())
+
+        self.currentTempurature['text'] = "%.2f" % self.ctrlLogic.GetAverageTempurature()
+        self.lowestTempurature['text'] = "%.2f" % self.ctrlLogic.GetLowestTempurature()
+        self.highestTempurature['text'] = "%.2f" % self.ctrlLogic.GetHighestTempurature()
+        self.currentState['text'] = CL.ThermometerState.GetStateText(self.ctrlLogic.GetState())
+        self.sensorCount['text'] = str(self.ctrlLogic.GetValidSensorCount())
+        self.lowSetting['text'] = str(self.tempuratureControl.GetCoolLimit())
+        self.highSetting['text'] = str(self.tempuratureControl.GetHeatLimit())
+
+        self.after(100, self.UpdateLabels)
 
     def Quit(self):
         self.threadValidator.Exit()

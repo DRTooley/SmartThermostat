@@ -34,7 +34,7 @@ class ControlLogic():
         self.StartControlLogicThread()
 
     def StartControlLogicThread(self):
-        t = threading.Thread(self.ControlLogicThread)
+        t = threading.Thread(target=self.ControlLogicThread)
         t.daemon = True
         t.start()
         self.threadValidator.SetControlLogicTimerThread(t)

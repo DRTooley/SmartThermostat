@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 
-import os
-import time
 import sys
-import tkinter
 
 from DebuggingControl import Debug
 import HardwareManager as HM

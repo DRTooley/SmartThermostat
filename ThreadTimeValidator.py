@@ -64,14 +64,6 @@ class ThreadTimeValidator():
 
     def Exit(self):
         self.running = False
-        for TO in self.allThreadOptions:
-            if TO.threadTimer is not None:
-                TO.threadTimer.cancel()
 
-        for TO in self.allThreadOptions:
-            if TO.threadTimer is not None:
-                TO.threadTimer.join()
 
-        # Allow other processes to exit
-        time.sleep(5)
         
