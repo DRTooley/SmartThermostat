@@ -3,14 +3,15 @@ import glob
 import time
 import threading
 
-import TempuratureSensor as TS
+from ThreadTimeValidator import ThreadTimeValidator
+from TempuratureSensor import TempuratureSensor
 from DebuggingControl import Debug
 
 class TempuratureReader():
-    def __init__(self, ThreadTimes):
+    def __init__(self):
 
         self.current_tempurature_sensors = {}
-        self.threadValidator = ThreadTimes
+        self.threadValidator = ThreadTimeValidator()
         self.validSensorCount = None
         self.sensorDirectoryLocation = '/sys/bus/w1/devices/28-*'
         debug = Debug()
@@ -36,7 +37,7 @@ class TempuratureReader():
                 try:
                     self.current_tempurature_sensors[filename]
                 except KeyError:
-                    self.current_tempurature_sensors[filename] = TS.TempuratureSensor(filename, self.threadValidator)
+                    self.current_tempurature_sensors[filename] = TempuratureSensor(filename, self.threadValidator)
 
         
     def RemoveLostFiles(self):

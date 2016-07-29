@@ -1,8 +1,9 @@
 import threading
 import time
 
-import HardwareManager as HM
-import TempuratureReader as TR
+from HardwareManager import HardwareManager
+from TempuratureReader import TempuratureReader
+from ThreadTimeValidator import ThreadTimeValidator
 
 class ThermometerState():
     numberOfThermometerStates = 6
@@ -24,13 +25,13 @@ class ThermometerState():
 
 
 class ControlLogic():
-    def __init__(self, ThreadTimes, TempMeter):
+    def __init__(self, TempMeter):
         self.state = ThermometerState.Undefined
         self.tempurature = -1002
-        self.threadValidator = ThreadTimes
+        self.threadValidator = ThreadTimeValidator()
         self.tempuratureControl = TempMeter
-        self.hardware = HM.HardwareManager()
-        self.tempuratureKeeper = TR.TempuratureReader(self.threadValidator)
+        self.hardware = HardwareManager()
+        self.tempuratureKeeper = TempuratureReader()
         self.StartControlLogicThread()
 
     def StartControlLogicThread(self):

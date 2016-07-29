@@ -9,5 +9,5 @@ class Debug():
 
         return Debug.__instance
 
-    def GetInfo(self):
+    def GetInfo(cls):
         return Debug.__instance.isDebugging

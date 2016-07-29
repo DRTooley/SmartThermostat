@@ -3,11 +3,11 @@
 import sys
 
 from DebuggingControl import Debug
-import HardwareManager as HM
-import ThermostatGUI as TG
+from HardwareManager import HardwareManager
+from ThermostatGUI import ThermostatApp
 
 def CleanThermostat():
-    Cleaner = HM.HardwareManager()
+    Cleaner = HardwareManager()
     Cleaner.DoCleanUp()
 
 
@@ -25,6 +25,6 @@ if __name__ == "__main__":
     if '-clean' in sys.argv:
         CleanThermostat()
     else:
-        app = TG.ThermostatApp(None)
+        app = ThermostatApp(None)
         app.title("Smart Thermostat Alpha")
         app.mainloop()

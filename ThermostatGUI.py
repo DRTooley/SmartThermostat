@@ -1,18 +1,17 @@
 import tkinter
-import time
-import threading
-import ControlLogic as CL
-import ThreadTimeValidator as TTV
-import TempuratureMeter as TM
+
+from ControlLogic import ControlLogic, ThermometerState
+from ThreadTimeValidator import ThreadTimeValidator
+from TempuratureMeter import TempuratureMeter
 
 
 class ThermostatApp(tkinter.Tk):
     def __init__(self, parent):
         tkinter.Tk.__init__(self, parent)
         self.parent = parent
-        self.tempuratureControl = TM.TempuratureMeter()
-        self.threadValidator = TTV.ThreadTimeValidator()
-        self.ctrlLogic = CL.ControlLogic(self.threadValidator, self.tempuratureControl)
+        self.tempuratureControl = TempuratureMeter()
+        self.threadValidator = ThreadTimeValidator()
+        self.ctrlLogic = ControlLogic(self.tempuratureControl)
 
         self.Initialize()
 
@@ -87,7 +86,7 @@ class ThermostatApp(tkinter.Tk):
         self.currentTempurature['text'] = "%.2f" % self.ctrlLogic.GetAverageTempurature()
         self.lowestTempurature['text'] = "%.2f" % self.ctrlLogic.GetLowestTempurature()
         self.highestTempurature['text'] = "%.2f" % self.ctrlLogic.GetHighestTempurature()
-        self.currentState['text'] = CL.ThermometerState.GetStateText(self.ctrlLogic.GetState())
+        self.currentState['text'] = ThermometerState.GetStateText(self.ctrlLogic.GetState())
         self.sensorCount['text'] = str(self.ctrlLogic.GetValidSensorCount())
         self.lowSetting['text'] = str(self.tempuratureControl.GetCoolLimit())
         self.highSetting['text'] = str(self.tempuratureControl.GetHeatLimit())
