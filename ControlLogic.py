@@ -46,8 +46,7 @@ class ControlLogic():
             CurrentTemp_Avg = self.tempuratureKeeper.AverageTempurature()
         
             self.DetermineState(CurrentTemp_Avg)
-        
-            self.StartControlLogicThread()
+
 
     def DetermineState(self, Temp):
         if Temp is None:
