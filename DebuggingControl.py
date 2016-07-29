@@ -1,9 +1,11 @@
 class Debug():
     __instance = None
+    
     def __new__(cls, arg=None):
         if Debug.__instance is None:
             Debug.__instance = object.__new__(cls)
-
+            Debug.__instance.isDebugging = None
+            
         if arg is not None:
             Debug.__instance.isDebugging = arg
 

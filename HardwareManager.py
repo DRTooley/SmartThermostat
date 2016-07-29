@@ -4,7 +4,7 @@ try:
     import RPi.GPIO as GPIO
 except ImportError:
     print("Debugging Mode Active")
-    d = Debug(True)
+    Debug(True)
 
 class RelayLine():
     def __init__(self, GPIO_out):

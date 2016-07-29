@@ -16,10 +16,10 @@ if __name__ == "__main__":
     ## The -clean command is needed in case of an error
     ## There will be threads going in the background
     ## and the GPIO will be on and must be cleaned
-
+    
     debugSet = {'-d','-D','-debug'}
     if set.intersection(debugSet, set(sys.argv)):
-        d = Debug(True)
+        Debug(True)
     if Debug().GetInfo() is None:
         Debug(False)
     if '-clean' in sys.argv:
