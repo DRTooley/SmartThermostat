@@ -9,6 +9,7 @@ class TempuratureMeter():
         self.maxHeat = 100
         self.minCool = 50
         self.minDifference = 3
+        self.unoccupiedAdjustment = 3
         self.device = DeviceSearch()
         self.MatchCoolLimit()
         self.CheckBounds()
@@ -21,19 +22,18 @@ class TempuratureMeter():
         if self.coolLimit < self.minCool:
             self.heatLimit = self.minCool+self.minDifference
             self.coolLimit = self.minCool
-       
 
     def GetHeatLimit(self):
-        adjustment = 3
         if self.device.deviceFound:
-            adjustment = 0
-        return self.heatLimit + adjustment
+            return self.heatLimit
+        else:
+            return self.heatLimit + self.unoccupiedAdjustment
 
     def GetCoolLimit(self):
-        adjustment = 3
         if self.device.deviceFound:
-            adjustment = 0
-        return self.coolLimit + adjustment
+            return self.coolLimit
+        else:
+            return self.coolLimit + self.unoccupiedAdjustment
 
     def MatchCoolLimit(self):
         if self.coolLimit+self.minDifference > self.heatLimit:
